@@ -1,4 +1,4 @@
-
+import 'package:e_commerce_app/utils/all_products.dart';
 import 'package:flutter/material.dart';
 
 class CartPage extends StatefulWidget {
@@ -39,6 +39,26 @@ class _CartPageState extends State<CartPage> {
             ),
           )
         ],
+      ),
+
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: cartItem.isEmpty
+          ? Center(
+            child: Text("Cart is empty"),
+          )
+          : Column(
+            children: 
+              cartItem.map((e) => Container(
+                child: Row(
+                  children: [
+                    Image.network(e['thumbnail']),
+                    Text(e['price']),
+                  ],
+                ),
+                )
+              ).toList(),
+          ),
       ),
     );
   }

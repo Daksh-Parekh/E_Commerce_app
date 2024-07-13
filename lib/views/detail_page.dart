@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/utils/all_products.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatefulWidget {
@@ -13,6 +14,8 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     Map<String,dynamic> product = ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>;
     Size size = MediaQuery.sizeOf(context);
+    
+    
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -39,6 +42,7 @@ class _DetailPageState extends State<DetailPage> {
           
         ],  
       ),
+
       body: Center(
         child: Column(          
           children: [
@@ -77,7 +81,9 @@ class _DetailPageState extends State<DetailPage> {
       ),
       
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          cartItem.add(product);
+        },
         child: Icon(
           Icons.add_shopping_cart_rounded,
         ), 
@@ -85,3 +91,12 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 }
+
+
+// List.generate(
+//                       product['images'].length,
+//                       (index) => Image.network(
+//                        product['images'][index],
+//                        fit: BoxFit.cover,
+//                       ),
+//                     ),

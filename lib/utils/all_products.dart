@@ -11808,5 +11808,6 @@ List<Map<String, dynamic>> allProducts =  [
 
 List<String> allCategories = allProducts.map((e) => e['category'].toString()).toSet().toList();
 
+List<Map<String,dynamic>> cartItem = [];
 
 //List<String> allCategories = allProducts.map((e) => e['category'],).toSet().toList() as List<String>;

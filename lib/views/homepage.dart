@@ -1,6 +1,7 @@
 import 'package:e_commerce_app/utils/all_products.dart';
+import 'package:e_commerce_app/views/Widgets/category_tile.dart';
+import 'package:e_commerce_app/views/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -27,14 +28,15 @@ class _HomepageState extends State<Homepage> {
     "https://www.picmaker.com/templates/_next/image?url=https%3A%2F%2Fstatic.picmaker.com%2Fscene-prebuilts%2Fthumbnails%2FYT-0103.png&w=1920&q=75",
     "https://c1.wallpaperflare.com/preview/327/906/571/perfume-smell-glass-bottles-aroma-fragrant-fragrance-thumbnail.jpg",
     "https://hatil.com/blog/wp-content/uploads/2022/09/Hatil-Thematic-Facebook-Thumbnail.png",
-
   ];
 
   @override
+  String selected = "All";
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
 
     return Scaffold(
+      drawer: Drawer(),
       appBar: AppBar(
         title: const Center(
           child: Text(
@@ -55,129 +57,74 @@ class _HomepageState extends State<Homepage> {
       body: Padding(
         padding: EdgeInsets.all(16),
         child: SingleChildScrollView(
-          child: Column(          
+          child: Column(         
+            crossAxisAlignment: CrossAxisAlignment.start, 
             children: [
-              SizedBox(
-                height: size.height * 0.4,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: allProducts.map((e) => GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(
-                          'detail_page',
-                          arguments: e,
-                        );
-                        //DEFAULT ROUTES
-                        // Route route = MaterialPageRoute(
-                        //   builder: (context) => DetailPage(product: e,),
-                        // );
-
-                        // Navigator.of(context).push(
-                        //   route,
-                        // );
-                      },
-                      child: Container(
-                        alignment: Alignment.topLeft,
-                        margin: const EdgeInsets.only(right: 10,bottom: 10),
-                        padding: const EdgeInsets.all(15),
-                        width: 180,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                          color: Colors.black
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(5, 6),
-                              blurRadius: 6,
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image(
-                              image: NetworkImage(e['thumbnail']),
-                            ),
-                            Text(e['title']),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text("\$${e['price']}"),
-                            // Image.network(e['thumbnail'],),
-                            const Spacer(),
-                            RatingBar.builder(
-                              initialRating: e['rating'],
-                              direction: Axis.horizontal,
-                              itemCount: 5,
-                              itemSize: 20,
-                              itemBuilder: (context, _) => const Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                              ),
-                              onRatingUpdate: (rating) {
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    ).toList(),
+              DropdownButton(
+                value: selected,
+                items: [
+                  DropdownMenuItem(
+                    value: "All",
+                    child: Text("All"),
                   ),
-                  // child: Row(
-                  //   children: fruits.map((e) => Container(
-                  //     padding: EdgeInsets.all(10),
-                  //     margin: EdgeInsets.all(10),
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.primaries[fruits.indexOf(e)],
-                  //     ),
-                  //     child: Text(e),
-                  //   ),
-                  //   ).toList(),
+                  ...allCategories.map(
+                    (e) => DropdownMenuItem(
+                    value: e,
+                    child: Text(e.tcase),
+                    ),
+                  ),
+                  
+                  // DropdownMenuItem(
+                  //   value: "Pak",
+                  //   child: Text("Pakistan"),
                   // ),
-                  // color: Colors.red,
-                ),
+                ], 
+                onChanged: (val) {
+                  selected = val ?? "All";
+                  setState(() {});
+                },
               ),
-              SizedBox(height: size.height*0.08,),
-              SizedBox(
-                height: size.height * 0.06,
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Expanded(
-                    child: Text(
-                      "Category",
-                    ),
-                  ),
-                ),
-              ),
+
+              CategoryTile(size: size, context: context),
+              CategoryTile(size: size, context: context, category: "furniture"),
+              CategoryTile(size: size, context: context),
               
+              // SizedBox(
+              //   height: size.height * 0.06,
+              //   child: Align(
+              //     alignment: Alignment.topLeft,
+              //     child: Expanded(
+              //       child: Text(
+              //         "Category",
+              //       ),
+              //     ),
+              //   ),
+              // ),
               
               //ChildAvtar for category..
-               SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                 child: Row(
-                   children: allCategories
-                    .map(
-                      (e)=> SizedBox(
-                        width: size.width * 0.2,
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                             // foregroundImage: NetworkImage("https://www.picmaker.com/templates/_next/image?url=https%3A%2F%2Fstatic.picmaker.com%2Fscene-prebuilts%2Fthumbnails%2FYT-0103.png&w=1920&q=75",),
-                              radius: 30,
-                            ),
-                            Text(e,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ).toList(),
-                 ),
-               ),
+              //  SingleChildScrollView(
+              //   scrollDirection: Axis.horizontal,
+              //    child: Row(
+              //      children: allCategories
+              //       .map(
+              //         (e)=> SizedBox(
+              //           width: size.width * 0.2,
+              //           child: Column(
+              //             children: [
+              //               CircleAvatar(
+              //                // foregroundImage: NetworkImage("https://www.picmaker.com/templates/_next/image?url=https%3A%2F%2Fstatic.picmaker.com%2Fscene-prebuilts%2Fthumbnails%2FYT-0103.png&w=1920&q=75",),
+              //                 radius: 30,
+              //               ),
+              //               Text(e,
+              //                 overflow: TextOverflow.ellipsis,
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //       ).toList(),
+              //    ),
+              //  ),
+               
                //Bottom Image
             //   SizedBox(
             //     height: size.height * 0.4,
