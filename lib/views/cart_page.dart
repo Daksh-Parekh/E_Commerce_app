@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/utils/all_products.dart';
+import 'package:e_commerce_app/views/extensions.dart';
 import 'package:flutter/material.dart';
 
 class CartPage extends StatefulWidget {
@@ -76,6 +77,7 @@ class _CartPageState extends State<CartPage> {
                       icon: (Icon(Icons.delete_forever_rounded)),
                     ),
 
+                  15.ofHeight,
                   Column(
                     children: [
                       Row(
