@@ -2,7 +2,6 @@ import 'package:e_commerce_app/utils/all_products.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatefulWidget {
-  //Map<String,dynamic> product;
   const DetailPage({super.key});
 
   @override
@@ -10,6 +9,15 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  double totalprice = 0;
+
+  @override
+  void initState() {
+    cartItem.forEach((element) {
+      totalprice += element['price'] * element['qty'];
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     Map<String,dynamic> product = ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>;
@@ -82,7 +90,10 @@ class _DetailPageState extends State<DetailPage> {
       
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          cartItem.add(product);
+          if(!cartItem.contains(product)) {
+            cartItem.add(product);
+            product['qty'] = 1;
+          }
         },
         child: Icon(
           Icons.add_shopping_cart_rounded,

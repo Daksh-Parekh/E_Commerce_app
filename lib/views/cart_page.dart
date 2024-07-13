@@ -26,13 +26,6 @@ class _CartPageState extends State<CartPage> {
           IconButton(
             onPressed: () {
               Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
-              // Route route = MaterialPageRoute(
-              //   builder: (context) => const Homepage(),
-              // );
-
-              // Navigator.of(context).pushAndRemoveUntil(
-              //   route, (route) => false,
-              // );
             }, 
             icon: Icon(
               Icons.home_rounded,
@@ -49,15 +42,71 @@ class _CartPageState extends State<CartPage> {
           )
           : Column(
             children: 
-              cartItem.map((e) => Container(
-                child: Row(
-                  children: [
-                    Image.network(e['thumbnail']),
-                    Text(e['price']),
+              cartItem.map((e) => Container(                
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 3,
+                      color: Colors.grey,
+                      offset: Offset(3, 3),
+                    ),
                   ],
                 ),
-                )
-              ).toList(),
+                height: 200,
+                margin: EdgeInsets.only(bottom: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image.network(e['thumbnail']),
+                    Text(
+                      "${e['price']}",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    IconButton(
+                      onPressed: () {
+                        cartItem.remove(e);
+                        setState(() {});
+                      } , 
+                      icon: (Icon(Icons.delete_forever_rounded)),
+                    ),
+
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                e['qty']--;
+                                setState(() {});
+                              }, 
+                              icon: (Icon(Icons.remove)),
+                            ),
+                        Text("${e['qty']}"),
+                        IconButton(
+                          onPressed: () {
+                            e['qty']++;
+                            setState(() {});
+                          }, 
+                          icon: (Icon(Icons.add)),
+                        ),
+                        ],
+                      ),
+                    ],
+                  ),
+                
+                  ],
+                ),
+                    
+                  
+                
+              ),
+            ).toList(),
           ),
       ),
     );
